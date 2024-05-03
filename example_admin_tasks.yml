@@ -1,0 +1,41 @@
+---
+- name: Manage Windows Server
+  hosts: node1
+  tasks:
+    - name: Ensure a service is running
+      win_service:
+        name: Spooler
+        state: restarted
+      ignore_errors: true
+
+    - name: Ensure a user exists
+      win_user:
+        name: johndoe
+        password: Password123
+        state: present
+      ignore_errors: true
+
+    - name: Ensure a group exists
+      win_group:
+        name: developers
+        state: present
+      ignore_errors: true
+
+    - name: Join a Windows host to a domain
+      win_domain_membership:
+        hostname: windows_node1
+        domain_name: example.com
+        domain_admin_user: admin
+        username: domain_admin
+        password: DomainAdminPassword
+        state: domain
+      ignore_errors: true
+
+    - name: Ensure a feature is installed
+      win_feature:
+        name: Web-Server
+        state: present
+      ignore_errors: true
+
+    - name: Check if a Windows host is reachable
+      win_ping:
